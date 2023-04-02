@@ -14,5 +14,7 @@ namespace LeoShopping.ProductAPI.Model.Context
             
         }
 
+        public DbSet<Product> Products { get; set; }
+
     }
 }
