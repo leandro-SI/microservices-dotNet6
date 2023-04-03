@@ -2,7 +2,7 @@
 
 namespace LeoShopping.ProductAPI.Repository
 {
-    public class ProductRepository : IProductRepository
+    public class ProductRepository
     {
     }
 }
