@@ -68,7 +68,5 @@ namespace LeoShopping.ProductAPI.Controllers
             return Ok(status);
         }
 
-
-
     }
 }
