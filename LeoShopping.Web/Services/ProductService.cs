@@ -10,9 +10,9 @@ namespace LeoShopping.Web.Services
         private readonly HttpClient _client;
         public const string BasePath = "/api/v1/product";
 
-        public ProductService()
+        public ProductService(HttpClient client)
         {
-            
+            _client = client;
         }
 
         public async Task<IEnumerable<ProductModel>> FindAllProducts()
@@ -27,19 +27,42 @@ namespace LeoShopping.Web.Services
             return await response.ReadContentAs<ProductModel>();
         }
 
-        public Task<ProductModel> CreateProduct(ProductModel model)
+        public async Task<ProductModel> CreateProduct(ProductModel model)
         {
-            throw new NotImplementedException();
+            var response = await _client.PostAsJson(BasePath, model);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.ReadContentAs<ProductModel>();
+            }
+
+            throw new Exception("Algo deu errado ao chamar a API");
+            
         }
 
-        public Task<ProductModel> UpdateProduct(ProductModel model)
+        public async Task<ProductModel> UpdateProduct(ProductModel model)
         {
-            throw new NotImplementedException();
+            var response = await _client.PutAsJson(BasePath, model);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.ReadContentAs<ProductModel>();
+            }
+
+            throw new Exception("Algo deu errado ao chamar a API");
         }
 
-        public Task<bool> DeleteProductById(long id)
+        public async Task<bool> DeleteProductById(long id)
         {
-            throw new NotImplementedException();
+            var response = await _client.DeleteAsync($"{BasePath}/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.ReadContentAs<bool>();
+            }
+
+            throw new Exception($"Could not delete {id}");
+            
         }
 
     }
