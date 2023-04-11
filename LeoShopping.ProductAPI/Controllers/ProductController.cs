@@ -38,7 +38,7 @@ namespace LeoShopping.ProductAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductDTO>> Create(ProductDTO productDTO)
+        public async Task<ActionResult<ProductDTO>> Create([FromBody] ProductDTO productDTO)
         {
 
             if (productDTO == null) return BadRequest();
@@ -49,7 +49,7 @@ namespace LeoShopping.ProductAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<ProductDTO>> Update(ProductDTO productDTO)
+        public async Task<ActionResult<ProductDTO>> Update([FromBody] ProductDTO productDTO)
         {
             if (productDTO == null) return BadRequest();
 
