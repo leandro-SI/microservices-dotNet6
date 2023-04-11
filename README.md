@@ -26,5 +26,4 @@ utilizando Asp.Net e .Net 6.
   
   run project
   
-  // choose "run-android" to run on android or "run-ios" to run on ios
 ```
