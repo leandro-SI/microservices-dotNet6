@@ -43,5 +43,38 @@ namespace LeoShopping.Web.Controllers
             
             return View(model);
         }
+
+        public async Task<IActionResult> ProductUpdate(long id)
+        {
+            var product = await _productService.FindProductById(id);
+
+            if (product != null)
+            {
+                return View(product);
+            }
+
+            return NotFound();
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ProductUpdate(ProductModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var response = await _productService.UpdateProduct(model);
+
+                if (response != null)
+                {
+                    return RedirectToAction(nameof(ProductIndex));
+                }
+
+            }            
+
+            return View(model);
+
+        }
+
     }
 }
