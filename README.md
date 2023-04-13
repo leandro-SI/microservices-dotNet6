@@ -1,8 +1,7 @@
 # Projeto De Microserviços
 
 ## Descrição
-Projeto experimental com o intuito de aplicar as tecnologias aprendidas como Microserviços, Mensageria com RabbitMQ, Conteinerização com Docker e autenticação, 
-utilizando Asp.Net e .Net 6.
+Projeto experimental com o intuito de aplicar as tecnologias aprendidas como Microserviços, Mensageria com RabbitMQ, Conteinerização com Docker e autenticação com Oauth2, OpenID e Identity Server, utilizando Asp.Net e .Net 6.
 
 - Página Inicial
 ![Alt Text](final/home.jpg)
