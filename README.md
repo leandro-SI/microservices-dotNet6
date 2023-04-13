@@ -31,6 +31,8 @@ utilizando Asp.Net e .Net 6.
   
   git clone https://github.com/leandro-SI/microservices-dotNet6
   
+  dotnet new --install Duende.IdentityServer.Templates
+  
   run project
   
 ```
