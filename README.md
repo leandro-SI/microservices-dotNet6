@@ -1,10 +1,16 @@
 # Projeto De Microserviços
 
 ## Descrição
-Projeto experimental com o intuito de aplicar as tecnologias aprendidas como Microserviços, Mensageria com RabbitMQ, Conteinerização com Docker e autenticação, 
-utilizando Asp.Net e .Net 6.
+Projeto experimental com o intuito de aplicar as tecnologias aprendidas como Microserviços, Mensageria com RabbitMQ, Conteinerização com Docker e autenticação com Oauth2, OpenID e Identity Server, utilizando Asp.Net e .Net 6.
 
+- Página Inicial
 ![Alt Text](final/home.jpg)
+
+ ##
+ 
+ - Tela novo Produto
+![Alt Text](final/novo.jpg)
+ 
 
 ## Prerequisites
 
@@ -23,6 +29,8 @@ utilizando Asp.Net e .Net 6.
 ```
   
   git clone https://github.com/leandro-SI/microservices-dotNet6
+  
+  dotnet new --install Duende.IdentityServer.Templates
   
   run project
   
