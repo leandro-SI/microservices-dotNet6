@@ -4,7 +4,14 @@
 Projeto experimental com o intuito de aplicar as tecnologias aprendidas como Microserviços, Mensageria com RabbitMQ, Conteinerização com Docker e autenticação, 
 utilizando Asp.Net e .Net 6.
 
+- Página Inicial
 ![Alt Text](final/home.jpg)
+
+ ##
+ 
+ - Tela novo Produto
+![Alt Text](final/novo.jpg)
+ 
 
 ## Prerequisites
 
