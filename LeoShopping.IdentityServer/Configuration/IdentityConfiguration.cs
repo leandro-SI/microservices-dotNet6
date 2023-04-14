@@ -1,4 +1,5 @@
-﻿using Duende.IdentityServer.Models;
+﻿using Duende.IdentityServer;
+using Duende.IdentityServer.Models;
 
 namespace LeoShopping.IdentityServer.Configuration
 {
@@ -30,7 +31,24 @@ namespace LeoShopping.IdentityServer.Configuration
                 new Client
                 {
                     ClientId = "client",
-                    ClientSecrets = { new Secret("r23|n^k+P/WaE=9T7!$cJLm6sVjF8ZvxMgHb".Sha256()) } 
+                    ClientSecrets = { new Secret("r23|n^k+P/WaE=9T7!$cJLm6sVjF8ZvxMgHb".Sha256()) },
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    AllowedScopes = { "read", "write", "profile" }
+                },
+                new Client
+                {
+                    ClientId = "leo_shopping",
+                    ClientSecrets = { new Secret("r23|n^k+P/WaE=9T7!$cJLm6sVjF8ZvxMgHb".Sha256()) },
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RedirectUris = {"http://localhost:10442/signin-oidc"},
+                    PostLogoutRedirectUris = {"http://localhost:10442/signout-callback-oidc"},
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Email,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "leo_shopping"
+                    }
                 }
             };
 
