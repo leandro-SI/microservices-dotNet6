@@ -6,7 +6,7 @@ namespace LeoShopping.IdentityServer.Configuration
     public static class IdentityConfiguration
     {
         public const string Admin = "Admin";
-        public const string Customer = "Customer";
+        public const string Client = "Client";
 
         public static IEnumerable<IdentityResource> IdentityResources =>
             new List<IdentityResource>
@@ -40,8 +40,8 @@ namespace LeoShopping.IdentityServer.Configuration
                     ClientId = "leo_shopping",
                     ClientSecrets = { new Secret("r23|n^k+P/WaE=9T7!$cJLm6sVjF8ZvxMgHb".Sha256()) },
                     AllowedGrantTypes = GrantTypes.Code,
-                    RedirectUris = {"http://localhost:10442/signin-oidc"},
-                    PostLogoutRedirectUris = {"http://localhost:10442/signout-callback-oidc"},
+                    RedirectUris = {"https://localhost:4430/signin-oidc"},
+                    PostLogoutRedirectUris = {"https://localhost:4430/signout-callback-oidc"},
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
