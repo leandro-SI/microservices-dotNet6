@@ -1,6 +1,7 @@
 using LeoShopping.IdentityServer.Configuration;
 using LeoShopping.IdentityServer.Model;
 using LeoShopping.IdentityServer.Model.Context;
+using LeoShopping.IdentityServer.Models.Initializer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -30,9 +31,14 @@ var builderIdentityServer = builder.Services.AddIdentityServer(options =>
     .AddInMemoryClients(IdentityConfiguration.Clients)
     .AddAspNetIdentity<ApplicationUser>();
 
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
 builderIdentityServer.AddDeveloperSigningCredential();
 
 var app = builder.Build();
+
+var configureScope = app.Services.CreateScope();
+var service = configureScope.ServiceProvider.GetService<IDbInitializer>();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -47,6 +53,9 @@ app.UseRouting();
 app.UseIdentityServer();
 
 app.UseAuthorization();
+
+service.Initialize();
+
 
 app.MapControllerRoute(
     name: "default",
