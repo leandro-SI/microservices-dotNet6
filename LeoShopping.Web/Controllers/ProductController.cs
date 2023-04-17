@@ -1,5 +1,7 @@
 ﻿using LeoShopping.Web.Models;
 using LeoShopping.Web.Services.IServices;
+using LeoShopping.Web.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LeoShopping.Web.Controllers
@@ -13,6 +15,7 @@ namespace LeoShopping.Web.Controllers
             _productService = productService;
         }
 
+        [Authorize]
         public async Task<IActionResult> ProductIndex()
         {
 
@@ -23,11 +26,11 @@ namespace LeoShopping.Web.Controllers
 
         public IActionResult ProductCreate()
         {
-
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> ProductCreate(ProductModel model)
         {
 
@@ -58,6 +61,7 @@ namespace LeoShopping.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> ProductUpdate(ProductModel model)
         {
 
@@ -76,6 +80,7 @@ namespace LeoShopping.Web.Controllers
 
         }
 
+        [Authorize]
         public async Task<IActionResult> ProductDelete(long id)
         {
             var product = await _productService.FindProductById(id);
@@ -90,6 +95,7 @@ namespace LeoShopping.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Role.Admin)]
         public async Task<IActionResult> ProductDelete(ProductModel model)
         {
 
