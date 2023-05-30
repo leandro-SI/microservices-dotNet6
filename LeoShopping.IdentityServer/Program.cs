@@ -1,7 +1,9 @@
+using Duende.IdentityServer.Services;
 using LeoShopping.IdentityServer.Configuration;
 using LeoShopping.IdentityServer.Model;
 using LeoShopping.IdentityServer.Model.Context;
 using LeoShopping.IdentityServer.Models.Initializer;
+using LeoShopping.IdentityServer.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -32,6 +34,7 @@ var builderIdentityServer = builder.Services.AddIdentityServer(options =>
     .AddAspNetIdentity<ApplicationUser>();
 
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
 
 builderIdentityServer.AddDeveloperSigningCredential();
 

@@ -1,6 +1,7 @@
 ﻿using LeoShopping.Web.Models;
 using LeoShopping.Web.Services.IServices;
 using LeoShopping.Web.Utils;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,8 +19,9 @@ namespace LeoShopping.Web.Controllers
         [Authorize]
         public async Task<IActionResult> ProductIndex()
         {
+            var token = await HttpContext.GetTokenAsync("access_token");
 
-            var products = await _productService.FindAllProducts();
+            var products = await _productService.FindAllProducts(token);
 
             return View(products);
         }
@@ -36,7 +38,9 @@ namespace LeoShopping.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var response = await _productService.CreateProduct(model);
+                var token = await HttpContext.GetTokenAsync("access_token");
+
+                var response = await _productService.CreateProduct(model, token);
 
                 if (response != null)
                 {
@@ -49,7 +53,9 @@ namespace LeoShopping.Web.Controllers
 
         public async Task<IActionResult> ProductUpdate(long id)
         {
-            var product = await _productService.FindProductById(id);
+            var token = await HttpContext.GetTokenAsync("access_token");
+
+            var product = await _productService.FindProductById(id, token   );
 
             if (product != null)
             {
@@ -67,7 +73,9 @@ namespace LeoShopping.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var response = await _productService.UpdateProduct(model);
+                var token = await HttpContext.GetTokenAsync("access_token");
+
+                var response = await _productService.UpdateProduct(model, token);
 
                 if (response != null)
                 {
@@ -83,7 +91,9 @@ namespace LeoShopping.Web.Controllers
         [Authorize]
         public async Task<IActionResult> ProductDelete(long id)
         {
-            var product = await _productService.FindProductById(id);
+            var token = await HttpContext.GetTokenAsync("access_token");
+
+            var product = await _productService.FindProductById(id, token);
 
             if (product != null)
             {
@@ -98,8 +108,9 @@ namespace LeoShopping.Web.Controllers
         [Authorize(Roles = Role.Admin)]
         public async Task<IActionResult> ProductDelete(ProductModel model)
         {
+            var token = await HttpContext.GetTokenAsync("access_token");
 
-            var response = await _productService.DeleteProductById(model.Id);
+            var response = await _productService.DeleteProductById(model.Id, token);
 
             if (response)
             {
