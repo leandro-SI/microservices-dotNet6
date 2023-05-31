@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeoShopping.Web", "LeoShopp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeoShopping.ProductAPI", "LeoShopping.ProductAPI\LeoShopping.ProductAPI.csproj", "{B328134A-A153-4E57-8C0B-F586AA9DB4F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeoShopping.IdentityServer", "LeoShopping.IdentityServer\LeoShopping.IdentityServer.csproj", "{620CE397-B967-4BD0-AAE2-9CF02001939C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeoShopping.IdentityServer", "LeoShopping.IdentityServer\LeoShopping.IdentityServer.csproj", "{620CE397-B967-4BD0-AAE2-9CF02001939C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeoShopping.CartAPI", "LeoShopping.CardAPI\LeoShopping.CartAPI.csproj", "{D99754AA-87AB-4F6D-851F-C055AA234699}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,10 @@ Global
 		{620CE397-B967-4BD0-AAE2-9CF02001939C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{620CE397-B967-4BD0-AAE2-9CF02001939C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{620CE397-B967-4BD0-AAE2-9CF02001939C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D99754AA-87AB-4F6D-851F-C055AA234699}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D99754AA-87AB-4F6D-851F-C055AA234699}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D99754AA-87AB-4F6D-851F-C055AA234699}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D99754AA-87AB-4F6D-851F-C055AA234699}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,6 +45,7 @@ Global
 		{333F821A-3242-45CC-B201-2F4C3AC16C50} = {C0ABB2AE-D3C4-4041-8361-FAD84BAAC181}
 		{B328134A-A153-4E57-8C0B-F586AA9DB4F4} = {F5D3BB4A-6342-4C9F-A97B-7040CFAC0BC0}
 		{620CE397-B967-4BD0-AAE2-9CF02001939C} = {F5D3BB4A-6342-4C9F-A97B-7040CFAC0BC0}
+		{D99754AA-87AB-4F6D-851F-C055AA234699} = {F5D3BB4A-6342-4C9F-A97B-7040CFAC0BC0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9E0C9882-797F-4910-BC54-8BE80C620DA6}
