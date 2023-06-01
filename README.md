@@ -20,6 +20,11 @@ Projeto experimental com o intuito de aplicar as tecnologias aprendidas como Mic
  
  - Tela Detalhes Produto
 ![Alt Text](final/datalheProduto.jpg)
+
+ ##
+ 
+ - Tela Carrinho de Compras
+![Alt Text](final/carrinho.jpg)
  
 
 ## Prerequisites
