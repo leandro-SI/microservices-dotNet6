@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LeoShopping.CartAPI.Migrations
 {
-    public partial class AddCartDataTableOnDb : Migration
+    public partial class addCardapiOnDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

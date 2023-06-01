@@ -94,13 +94,9 @@ namespace LeoShopping.CartAPI.Repository
             try
             {
                 Cart cart = _mapper.Map<Cart>(dto);
-
-                cart.CartDetails = _mapper.Map<List<CartDetail>>(dto.CartDetail);
-
+                //Verifica se o produto já está salvo no banco de dados caso não exista salve
                 var product = await _context.Products.FirstOrDefaultAsync(
-                    p => p.Id == dto.CartDetail.FirstOrDefault().ProductId);
-
-                var productAux = cart.CartDetails.FirstOrDefault().Product;
+                    p => p.Id == dto.CartDetails.FirstOrDefault().ProductId);
 
                 if (product == null)
                 {
@@ -108,26 +104,32 @@ namespace LeoShopping.CartAPI.Repository
                     await _context.SaveChangesAsync();
                 }
 
+                //Verifique se CartHeader é nulo
+
                 var cartHeader = await _context.CartHeaders.AsNoTracking().FirstOrDefaultAsync(
                     c => c.UserId == cart.CartHeader.UserId);
 
                 if (cartHeader == null)
                 {
+                    //Criar CartHeader e CartDetails
                     _context.CartHeaders.Add(cart.CartHeader);
                     await _context.SaveChangesAsync();
-                    cart.CartDetails.FirstOrDefault().CartHeaderId = cartHeader.Id;
+                    cart.CartDetails.FirstOrDefault().CartHeaderId = cart.CartHeader.Id;
                     cart.CartDetails.FirstOrDefault().Product = null;
                     _context.CartDetails.Add(cart.CartDetails.FirstOrDefault());
                     await _context.SaveChangesAsync();
                 }
                 else
                 {
+                    //Se CartHeader não for nulo
+                    //Verifique se CartDetails tem o mesmo produto
                     var cartDetail = await _context.CartDetails.AsNoTracking().FirstOrDefaultAsync(
                         p => p.ProductId == cart.CartDetails.FirstOrDefault().ProductId &&
                         p.CartHeaderId == cartHeader.Id);
 
                     if (cartDetail == null)
                     {
+                        //Detalhes do carrinho
                         cart.CartDetails.FirstOrDefault().CartHeaderId = cartHeader.Id;
                         cart.CartDetails.FirstOrDefault().Product = null;
                         _context.CartDetails.Add(cart.CartDetails.FirstOrDefault());
@@ -135,6 +137,7 @@ namespace LeoShopping.CartAPI.Repository
                     }
                     else
                     {
+                        //Atualize a contagem de produtos e CartDetails
                         cart.CartDetails.FirstOrDefault().Product = null;
                         cart.CartDetails.FirstOrDefault().Count += cartDetail.Count;
                         cart.CartDetails.FirstOrDefault().Id = cartDetail.Id;
@@ -143,8 +146,8 @@ namespace LeoShopping.CartAPI.Repository
                         await _context.SaveChangesAsync();
                     }
                 }
-
                 return _mapper.Map<CartDTO>(cart);
+
             }
             catch (Exception _error)
             {

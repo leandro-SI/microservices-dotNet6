@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LeoShopping.CartAPI.Migrations
 {
     [DbContext(typeof(MySQLContext))]
-    [Migration("20230531173833_AddCartDataTableOnDb")]
-    partial class AddCartDataTableOnDb
+    [Migration("20230601170212_add-Card-apiOnDb")]
+    partial class addCardapiOnDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
