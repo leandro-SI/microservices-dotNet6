@@ -18,16 +18,16 @@ namespace LeoShopping.CartAPI.Controllers
 
 
         [HttpGet("find-cart/{id}")]
-        public async Task<ActionResult<CartDTO>> FindById(string userId)
+        public async Task<ActionResult<CartDTO>> FindById(string id)
         {
-            var cart = await _repository.FindCartbyUserId(userId);
+            var cart = await _repository.FindCartbyUserId(id);
 
             if (cart == null) return NotFound();
 
             return Ok(cart);
         }
 
-        [HttpPost("add-cart/{id}")]
+        [HttpPost("add-cart")]
         public async Task<ActionResult<CartDTO>> AddCart(CartDTO cartDTO)
         {
             var cart = await _repository.SaveOrUpdateCart(cartDTO);
@@ -37,7 +37,7 @@ namespace LeoShopping.CartAPI.Controllers
             return Ok(cart);
         }
 
-        [HttpPut("update-cart/{id}")]
+        [HttpPut("update-cart")]
         public async Task<ActionResult<CartDTO>> UpdateCart(CartDTO cartDTO)
         {
             var cart = await _repository.SaveOrUpdateCart(cartDTO);

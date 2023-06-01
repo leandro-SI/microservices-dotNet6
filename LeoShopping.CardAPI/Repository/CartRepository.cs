@@ -91,37 +91,30 @@ namespace LeoShopping.CartAPI.Repository
 
         public async Task<CartDTO> SaveOrUpdateCart(CartDTO dto)
         {
-            Cart cart = _mapper.Map<Cart>(dto);
-
-            var product = await _context.Products.FirstOrDefaultAsync(
-                p => p.Id == dto.CartDetail.FirstOrDefault().ProductId);
-
-            if (product != null)
+            try
             {
-                _context.Products.Add(cart.CartDetails.FirstOrDefault().Product);
-                await _context.SaveChangesAsync();
-            }
+                Cart cart = _mapper.Map<Cart>(dto);
 
-            var cartHeader = await _context.CartHeaders.AsNoTracking().FirstOrDefaultAsync(
-                c => c.UserId == cart.CartHeader.UserId);
+                cart.CartDetails = _mapper.Map<List<CartDetail>>(dto.CartDetail);
 
-            if (cartHeader != null)
-            {
-                _context.CartHeaders.Add(cart.CartHeader);
-                await _context.SaveChangesAsync();
-                cart.CartDetails.FirstOrDefault().CartHeaderId = cartHeader.Id;
-                cart.CartDetails.FirstOrDefault().Product = null;
-                _context.CartDetails.Add(cart.CartDetails.FirstOrDefault());
-                await _context.SaveChangesAsync();
-            }
-            else
-            {
-                var cartDetail = await _context.CartDetails.AsNoTracking().FirstOrDefaultAsync(
-                    p => p.ProductId == dto.CartDetail.FirstOrDefault().ProductId &&
-                    p.CartHeaderId == cartHeader.Id);
+                var product = await _context.Products.FirstOrDefaultAsync(
+                    p => p.Id == dto.CartDetail.FirstOrDefault().ProductId);
 
-                if (cartDetail != null)
+                var productAux = cart.CartDetails.FirstOrDefault().Product;
+
+                if (product == null)
                 {
+                    _context.Products.Add(cart.CartDetails.FirstOrDefault().Product);
+                    await _context.SaveChangesAsync();
+                }
+
+                var cartHeader = await _context.CartHeaders.AsNoTracking().FirstOrDefaultAsync(
+                    c => c.UserId == cart.CartHeader.UserId);
+
+                if (cartHeader == null)
+                {
+                    _context.CartHeaders.Add(cart.CartHeader);
+                    await _context.SaveChangesAsync();
                     cart.CartDetails.FirstOrDefault().CartHeaderId = cartHeader.Id;
                     cart.CartDetails.FirstOrDefault().Product = null;
                     _context.CartDetails.Add(cart.CartDetails.FirstOrDefault());
@@ -129,16 +122,35 @@ namespace LeoShopping.CartAPI.Repository
                 }
                 else
                 {
-                    cart.CartDetails.FirstOrDefault().Product = null;
-                    cart.CartDetails.FirstOrDefault().Count += cartDetail.Count;
-                    cart.CartDetails.FirstOrDefault().Id = cartDetail.Id;
-                    cart.CartDetails.FirstOrDefault().CartHeaderId = cartDetail.CartHeaderId;
-                    _context.CartDetails.Update(cart.CartDetails.FirstOrDefault());
-                    await _context.SaveChangesAsync();
-                }
-            }
+                    var cartDetail = await _context.CartDetails.AsNoTracking().FirstOrDefaultAsync(
+                        p => p.ProductId == cart.CartDetails.FirstOrDefault().ProductId &&
+                        p.CartHeaderId == cartHeader.Id);
 
-            return _mapper.Map<CartDTO>(cart);
+                    if (cartDetail == null)
+                    {
+                        cart.CartDetails.FirstOrDefault().CartHeaderId = cartHeader.Id;
+                        cart.CartDetails.FirstOrDefault().Product = null;
+                        _context.CartDetails.Add(cart.CartDetails.FirstOrDefault());
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        cart.CartDetails.FirstOrDefault().Product = null;
+                        cart.CartDetails.FirstOrDefault().Count += cartDetail.Count;
+                        cart.CartDetails.FirstOrDefault().Id = cartDetail.Id;
+                        cart.CartDetails.FirstOrDefault().CartHeaderId = cartDetail.CartHeaderId;
+                        _context.CartDetails.Update(cart.CartDetails.FirstOrDefault());
+                        await _context.SaveChangesAsync();
+                    }
+                }
+
+                return _mapper.Map<CartDTO>(cart);
+            }
+            catch (Exception _error)
+            {
+
+                throw new Exception(_error.Message);
+            }
         }
     }
 }
