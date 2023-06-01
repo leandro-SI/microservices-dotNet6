@@ -15,6 +15,11 @@ Projeto experimental com o intuito de aplicar as tecnologias aprendidas como Mic
  
  - Tela Home listagem de Produtos
 ![Alt Text](final/homeProdutos.jpg)
+
+ ##
+ 
+ - Tela Detalhes Produto
+![Alt Text](final/datalheProduto.jpg)
  
 
 ## Prerequisites
