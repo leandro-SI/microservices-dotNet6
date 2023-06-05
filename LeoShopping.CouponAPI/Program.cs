@@ -1,8 +1,8 @@
 using AutoMapper;
-using LeoShopping.ProductAPI.Config;
-using LeoShopping.ProductAPI.Model.Context;
-using LeoShopping.ProductAPI.Repository;
-using LeoShopping.ProductAPI.Repository.Interfaces;
+using LeoShopping.CouponAPI.Config;
+using LeoShopping.CouponAPI.Model.Context;
+using LeoShopping.CouponAPI.Repository;
+using LeoShopping.CouponAPI.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -10,7 +10,6 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 
 var connection = builder.Configuration["ConnectionStrings:LeoConnectionDB"];
 
@@ -20,7 +19,7 @@ IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICouponReposiroty, CouponReposiroty>();
 
 builder.Services.AddControllers();
 
@@ -51,18 +50,18 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo 
-    { 
-        Title = "LeoShopping Microserviço - Product", 
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "LeoShopping Microserviço - Coupon",
         Version = "v1",
         Contact = new OpenApiContact
         {
             Name = "Leandro Cesar",
             Email = "contato@leandrocesar.com",
             Url = new Uri("http://www.leandrocesar.com.br"),
-            
+
         }
-    
+
     });
     c.EnableAnnotations();
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -73,7 +72,7 @@ builder.Services.AddSwaggerGen(c =>
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
     });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement 
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme

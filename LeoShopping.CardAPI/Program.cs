@@ -52,7 +52,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "LeoShopping Microservices Project",
+        Title = "LeoShopping Microserviço - Cart",
         Version = "v1",
         Contact = new OpenApiContact
         {
