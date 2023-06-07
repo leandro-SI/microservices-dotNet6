@@ -17,9 +17,21 @@ namespace LeoShopping.CartAPI.Repository
             _mapper = mapper;
         }
 
-        public Task<bool> ApplyCoupon(string userId, string couponCode)
+        public async Task<bool> ApplyCoupon(string userId, string couponCode)
         {
-            throw new NotImplementedException();
+            var header = await _context.CartHeaders
+                        .FirstOrDefaultAsync(x => x.UserId == userId);
+
+            if (header != null)
+            {
+                header.CouponCode = couponCode;
+                _context.CartHeaders.Update(header);
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+
+            return false;
         }
 
         public async Task<bool> ClearCart(string userId)
@@ -56,9 +68,21 @@ namespace LeoShopping.CartAPI.Repository
             return _mapper.Map<CartDTO>(cart);
         }
 
-        public Task<bool> RemoveCoupon(string userId)
+        public async Task<bool> RemoveCoupon(string userId)
         {
-            throw new NotImplementedException();
+            var header = await _context.CartHeaders
+                        .FirstOrDefaultAsync(x => x.UserId == userId);
+
+            if (header != null)
+            {
+                header.CouponCode = string.Empty;
+                _context.CartHeaders.Update(header);
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+
+            return false;
         }
 
         public async Task<bool> RemoveFromCart(long cartDetailsId)

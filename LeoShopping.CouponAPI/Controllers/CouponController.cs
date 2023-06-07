@@ -18,14 +18,14 @@ namespace LeoShopping.CouponAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpGet("{couponCode}")]
         public async Task<IActionResult> GetCouponByCouponCode(string couponCode)
         {
             var coupon = await _couponReposiroty.GetCouponByCouponCode(couponCode);
 
-            if (couponCode == null) return NotFound();
+            if (coupon == null) return NotFound();
 
-            return Ok(couponCode);
+            return Ok(coupon);
 
         }
 
