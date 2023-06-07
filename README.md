@@ -25,6 +25,11 @@ Projeto experimental com o intuito de aplicar as tecnologias aprendidas como Mic
  
  - Tela Carrinho de Compras
 ![Alt Text](final/carrinho.jpg)
+
+ ##
+ 
+ - Tela de Checkout
+![Alt Text](final/final--checkout.jpg)
  
 
 ## Prerequisites
