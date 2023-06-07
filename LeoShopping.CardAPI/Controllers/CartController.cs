@@ -1,4 +1,5 @@
-﻿using LeoShopping.CartAPI.Model;
+﻿using LeoShopping.CartAPI.Messages;
+using LeoShopping.CartAPI.Model;
 using LeoShopping.CartAPI.Repository.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -75,6 +76,21 @@ namespace LeoShopping.CartAPI.Controllers
             if (!status) return NotFound();
 
             return Ok(status);
+        }
+
+        [HttpPost("checkout")]
+        public async Task<ActionResult<CheckoutHeaderDTO>> Checkout(CheckoutHeaderDTO dto)
+        {
+            var cart = await _repository.FindCartbyUserId(dto.UserId);
+
+            if (cart == null) return NotFound();
+
+            dto.CartDetails = cart.CartDetails;
+            dto.Time = DateTime.Now;
+
+            // TASK RabbitMQ logic comes here!!!
+
+            return Ok(dto);
         }
 
 

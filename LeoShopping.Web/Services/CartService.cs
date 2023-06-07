@@ -30,11 +30,6 @@ namespace LeoShopping.Web.Services
             throw new Exception("Algo deu errado ao chamar a API");
         }
 
-        public Task<CartViewModel> Checkout(CartHeaderViewModel cartHeader, string token)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<bool> ClearCart(string userId, string token)
         {
             throw new NotImplementedException();
@@ -100,6 +95,20 @@ namespace LeoShopping.Web.Services
             if (response.IsSuccessStatusCode)
             {
                 return await response.ReadContentAs<bool>();
+            }
+
+            throw new Exception("Algo deu errado ao chamar a API");
+        }
+
+        public async Task<CartHeaderViewModel> Checkout(CartHeaderViewModel model, string token)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _client.PostAsJson($"{BasePath}/checkout", model);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.ReadContentAs<CartHeaderViewModel>();
             }
 
             throw new Exception("Algo deu errado ao chamar a API");

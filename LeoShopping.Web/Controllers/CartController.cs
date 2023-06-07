@@ -87,6 +87,26 @@ namespace LeoShopping.Web.Controllers
             return View(response);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Checkout(CartViewModel model)
+        {
+            var token = await HttpContext.GetTokenAsync("access_token");
+
+            var response = await _cartService.Checkout(model.CartHeader, token);
+
+            if (response != null)
+            {
+                return RedirectToAction(nameof(Confirmation));
+            }
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> Confirmation()
+        {
+            return View();
+        }
+
         private async Task<CartViewModel> FindUserCart()
         {
             var token = await HttpContext.GetTokenAsync("access_token");
