@@ -1,6 +1,7 @@
 using AutoMapper;
 using LeoShopping.CartAPI.Config;
 using LeoShopping.CartAPI.Model.Context;
+using LeoShopping.CartAPI.RabbitMQSender;
 using LeoShopping.CartAPI.Repository;
 using LeoShopping.CartAPI.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<IRabbitMQMessageSenser, RabbitMQMessageSenser>();
 
 builder.Services.AddControllers();
 

@@ -1,5 +1,6 @@
 ﻿using LeoShopping.CartAPI.Messages;
 using LeoShopping.CartAPI.Model;
+using LeoShopping.CartAPI.RabbitMQSender;
 using LeoShopping.CartAPI.Repository.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,12 @@ namespace LeoShopping.CartAPI.Controllers
     public class CartController : ControllerBase
     {
         private readonly ICartRepository _repository;
+        private readonly IRabbitMQMessageSenser _rabbitMQMessageSenser;
 
-        public CartController(ICartRepository repository)
+        public CartController(ICartRepository repository, IRabbitMQMessageSenser rabbitMQMessageSenser)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _rabbitMQMessageSenser = rabbitMQMessageSenser;
         }
 
 
@@ -81,6 +84,9 @@ namespace LeoShopping.CartAPI.Controllers
         [HttpPost("checkout")]
         public async Task<ActionResult<CheckoutHeaderDTO>> Checkout(CheckoutHeaderDTO dto)
         {
+
+            if (dto?.UserId == null) return BadRequest();
+
             var cart = await _repository.FindCartbyUserId(dto.UserId);
 
             if (cart == null) return NotFound();
@@ -89,6 +95,8 @@ namespace LeoShopping.CartAPI.Controllers
             dto.Time = DateTime.Now;
 
             // TASK RabbitMQ logic comes here!!!
+
+            _rabbitMQMessageSenser.SendMessage(dto, "checkoutqueue");
 
             return Ok(dto);
         }
