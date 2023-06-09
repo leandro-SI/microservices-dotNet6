@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeoShopping.MessageBus", "LeoShopping.MessageBus\LeoShopping.MessageBus.csproj", "{700F7AC1-8554-4E86-8D32-F93294621FFE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeoShopping.OrderAPI", "LeoShopping.OrderAPI\LeoShopping.OrderAPI.csproj", "{697189FB-419E-41EA-98A8-8DE65C2831EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{700F7AC1-8554-4E86-8D32-F93294621FFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{700F7AC1-8554-4E86-8D32-F93294621FFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{700F7AC1-8554-4E86-8D32-F93294621FFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{697189FB-419E-41EA-98A8-8DE65C2831EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{697189FB-419E-41EA-98A8-8DE65C2831EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{697189FB-419E-41EA-98A8-8DE65C2831EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{697189FB-419E-41EA-98A8-8DE65C2831EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{D99754AA-87AB-4F6D-851F-C055AA234699} = {F5D3BB4A-6342-4C9F-A97B-7040CFAC0BC0}
 		{2047476D-A750-497B-87AC-AF918CAB4087} = {F5D3BB4A-6342-4C9F-A97B-7040CFAC0BC0}
 		{700F7AC1-8554-4E86-8D32-F93294621FFE} = {A42C016B-CDD2-4F00-B8AE-F6B7A585D614}
+		{697189FB-419E-41EA-98A8-8DE65C2831EE} = {F5D3BB4A-6342-4C9F-A97B-7040CFAC0BC0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9E0C9882-797F-4910-BC54-8BE80C620DA6}
