@@ -5,6 +5,7 @@ using LeoShopping.CartAPI.RabbitMQSender;
 using LeoShopping.CartAPI.Repository;
 using LeoShopping.CartAPI.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -21,7 +22,11 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<ICouponReposiroty, CouponReposiroty>();
 builder.Services.AddScoped<IRabbitMQMessageSenser, RabbitMQMessageSenser>();
+
+builder.Services.AddHttpClient<ICouponReposiroty, CouponReposiroty>(s => s.BaseAddress = 
+    new Uri(builder.Configuration["ServiceUrls:CouponAPI"]));
 
 builder.Services.AddControllers();
 

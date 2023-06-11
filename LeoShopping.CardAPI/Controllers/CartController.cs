@@ -1,4 +1,5 @@
-﻿using LeoShopping.CartAPI.Messages;
+﻿using LeoShopping.CartAPI.Data.Dtos;
+using LeoShopping.CartAPI.Messages;
 using LeoShopping.CartAPI.Model;
 using LeoShopping.CartAPI.RabbitMQSender;
 using LeoShopping.CartAPI.Repository.Interfaces;
@@ -11,20 +12,22 @@ namespace LeoShopping.CartAPI.Controllers
     [ApiController]
     public class CartController : ControllerBase
     {
-        private readonly ICartRepository _repository;
+        private readonly ICartRepository _cartRepository;
+        private readonly ICouponReposiroty _couponRepository;
         private readonly IRabbitMQMessageSenser _rabbitMQMessageSenser;
 
-        public CartController(ICartRepository repository, IRabbitMQMessageSenser rabbitMQMessageSenser)
+        public CartController(ICartRepository repository, IRabbitMQMessageSenser rabbitMQMessageSenser, ICouponReposiroty couponRepository)
         {
-            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _cartRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             _rabbitMQMessageSenser = rabbitMQMessageSenser;
+            _couponRepository = couponRepository;
         }
 
 
         [HttpGet("find-cart/{id}")]
         public async Task<ActionResult<CartDTO>> FindById(string id)
         {
-            var cart = await _repository.FindCartbyUserId(id);
+            var cart = await _cartRepository.FindCartbyUserId(id);
 
             if (cart == null) return NotFound();
 
@@ -34,7 +37,7 @@ namespace LeoShopping.CartAPI.Controllers
         [HttpPost("add-cart")]
         public async Task<ActionResult<CartDTO>> AddCart(CartDTO cartDTO)
         {
-            var cart = await _repository.SaveOrUpdateCart(cartDTO);
+            var cart = await _cartRepository.SaveOrUpdateCart(cartDTO);
 
             if (cart == null) return NotFound();
 
@@ -44,7 +47,7 @@ namespace LeoShopping.CartAPI.Controllers
         [HttpPut("update-cart")]
         public async Task<ActionResult<CartDTO>> UpdateCart(CartDTO cartDTO)
         {
-            var cart = await _repository.SaveOrUpdateCart(cartDTO);
+            var cart = await _cartRepository.SaveOrUpdateCart(cartDTO);
 
             if (cart == null) return NotFound();
 
@@ -54,7 +57,7 @@ namespace LeoShopping.CartAPI.Controllers
         [HttpDelete("remove-cart/{id}")]
         public async Task<ActionResult<CartDTO>> RemoveCart(int id)
         {
-            var response = await _repository.RemoveFromCart(id);
+            var response = await _cartRepository.RemoveFromCart(id);
 
             if (!response) return BadRequest();
 
@@ -64,7 +67,7 @@ namespace LeoShopping.CartAPI.Controllers
         [HttpPost("apply-coupon")]
         public async Task<ActionResult<CartDTO>> ApplyCoupon(CartDTO cartDTO)
         {
-            var status = await _repository.ApplyCoupon(cartDTO.CartHeader.UserId, cartDTO.CartHeader.CouponCode);
+            var status = await _cartRepository.ApplyCoupon(cartDTO.CartHeader.UserId, cartDTO.CartHeader.CouponCode);
 
             if (!status) return NotFound();
 
@@ -74,7 +77,7 @@ namespace LeoShopping.CartAPI.Controllers
         [HttpDelete("remove-coupon/{userId}")]
         public async Task<ActionResult<CartDTO>> RemoveCoupon(string userId)
         {
-            var status = await _repository.RemoveCoupon(userId);
+            var status = await _cartRepository.RemoveCoupon(userId);
 
             if (!status) return NotFound();
 
@@ -84,12 +87,23 @@ namespace LeoShopping.CartAPI.Controllers
         [HttpPost("checkout")]
         public async Task<ActionResult<CheckoutHeaderDTO>> Checkout(CheckoutHeaderDTO dto)
         {
+            string token = Request.Headers["Authorization"];
 
             if (dto?.UserId == null) return BadRequest();
 
-            var cart = await _repository.FindCartbyUserId(dto.UserId);
+            var cart = await _cartRepository.FindCartbyUserId(dto.UserId);
 
             if (cart == null) return NotFound();
+
+            if (!string.IsNullOrEmpty(dto.CouponCode))
+            {
+                CouponDTO coupon = await _couponRepository.GetCouponByCouponCode(dto.CouponCode, token);
+
+                if (dto.DiscountTotal != coupon.DiscountAmount)
+                {
+                    return StatusCode(412);
+                }
+            }
 
             dto.CartDetails = cart.CartDetails;
             dto.Time = DateTime.Now;
