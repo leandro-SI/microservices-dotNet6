@@ -3,6 +3,7 @@ using LeoShopping.CartAPI.Messages;
 using LeoShopping.CartAPI.Model;
 using LeoShopping.CartAPI.RabbitMQSender;
 using LeoShopping.CartAPI.Repository.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -87,7 +88,8 @@ namespace LeoShopping.CartAPI.Controllers
         [HttpPost("checkout")]
         public async Task<ActionResult<CheckoutHeaderDTO>> Checkout(CheckoutHeaderDTO dto)
         {
-            string token = Request.Headers["Authorization"];
+            //string token = Request.Headers["Authorization"];
+            var token = await HttpContext.GetTokenAsync("access_token");
 
             if (dto?.UserId == null) return BadRequest();
 
