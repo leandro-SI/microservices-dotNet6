@@ -65,7 +65,7 @@ namespace LeoShopping.PaymentAPI.MessageConsumer
 
             try
             {
-                _rabbitMQMessageSenser.SendMessage(paymentResult, "orderpaymentresultqueue");
+                _rabbitMQMessageSenser.SendMessage(paymentResult);
             }
             catch (Exception)
             {
