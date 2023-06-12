@@ -31,6 +31,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeoShopping.PaymentAPI", "L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeoShopping.Email", "LeoShopping.Email\LeoShopping.Email.csproj", "{A4C5A7F2-6D1E-4136-A661-781EA3A17A93}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{C86A157C-01DA-4AC7-839A-B05D28B1FF49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeoShopping.APIGateway", "LeoShopping.APIGateway\LeoShopping.APIGateway.csproj", "{958F1FE3-4137-42EE-8C4D-9AF59E7D3B16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +81,10 @@ Global
 		{A4C5A7F2-6D1E-4136-A661-781EA3A17A93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4C5A7F2-6D1E-4136-A661-781EA3A17A93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4C5A7F2-6D1E-4136-A661-781EA3A17A93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{958F1FE3-4137-42EE-8C4D-9AF59E7D3B16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{958F1FE3-4137-42EE-8C4D-9AF59E7D3B16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{958F1FE3-4137-42EE-8C4D-9AF59E7D3B16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{958F1FE3-4137-42EE-8C4D-9AF59E7D3B16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +100,7 @@ Global
 		{269BF3A2-B3BB-48F7-BC58-9FF8EB59FEE1} = {2B8BC400-FC8D-4F31-A086-ED5FCF4A0B9A}
 		{379DFC44-FC01-4089-8723-168911A25FB5} = {F5D3BB4A-6342-4C9F-A97B-7040CFAC0BC0}
 		{A4C5A7F2-6D1E-4136-A661-781EA3A17A93} = {F5D3BB4A-6342-4C9F-A97B-7040CFAC0BC0}
+		{958F1FE3-4137-42EE-8C4D-9AF59E7D3B16} = {C86A157C-01DA-4AC7-839A-B05D28B1FF49}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9E0C9882-797F-4910-BC54-8BE80C620DA6}
