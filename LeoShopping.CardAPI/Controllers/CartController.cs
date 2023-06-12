@@ -114,6 +114,8 @@ namespace LeoShopping.CartAPI.Controllers
 
             _rabbitMQMessageSenser.SendMessage(dto, "checkoutqueue");
 
+            await _cartRepository.ClearCart(dto.UserId);
+
             return Ok(dto);
         }
 

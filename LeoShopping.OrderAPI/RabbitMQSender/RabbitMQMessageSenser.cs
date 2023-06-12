@@ -1,10 +1,10 @@
-﻿using LeoShopping.CartAPI.Messages;
+﻿using LeoShopping.OrderAPI.Messages;
 using LeoShopping.MessageBus;
 using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
 
-namespace LeoShopping.CartAPI.RabbitMQSender
+namespace LeoShopping.OrderAPI.RabbitMQSender
 {
     public class RabbitMQMessageSenser : IRabbitMQMessageSenser
     {
@@ -41,7 +41,7 @@ namespace LeoShopping.CartAPI.RabbitMQSender
                 WriteIndented = true,
             };
 
-            var json = JsonSerializer.Serialize<CheckoutHeaderDTO>((CheckoutHeaderDTO) message, options);
+            var json = JsonSerializer.Serialize<PaymentDTO>((PaymentDTO) message, options);
             var body = Encoding.UTF8.GetBytes(json);
 
             return body;

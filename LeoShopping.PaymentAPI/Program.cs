@@ -1,52 +1,16 @@
-using LeoShopping.OrderAPI.Model.Context;
-using LeoShopping.OrderAPI.RabbitMQConsumer;
-using LeoShopping.OrderAPI.RabbitMQSender;
-using LeoShopping.OrderAPI.Repository;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+using LeoShopping.PaymentAPI.MessageConsumer;
+using LeoShopping.PaymentAPI.Messages;
+using LeoShopping.PaymentAPI.RabbitMQSender;
+using LeoShopping.PaymentProcessor;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-var connection = builder.Configuration["ConnectionStrings:LeoConnectionDB"];
-
-builder.Services.AddDbContext<MySQLContext>(options => options.UseMySql(connection, new MySqlServerVersion(new Version(8, 0, 32))));
-
-var builderContext = new DbContextOptionsBuilder<MySQLContext>();
-builderContext.UseMySql(connection, new MySqlServerVersion(new Version(8, 0, 32)));
-
-builder.Services.AddSingleton(new OrderRepository(builderContext.Options));
-
-builder.Services.AddHostedService<RabbitMQCheckoutConsumer>();
 builder.Services.AddHostedService<RabbitMQPaymentConsumer>();
+builder.Services.AddSingleton<IProcessPayment, ProcessPayment>();
 builder.Services.AddSingleton<IRabbitMQMessageSenser, RabbitMQMessageSenser>();
-
-builder.Services.AddControllers();
-
-
-builder.Services.AddAuthentication("Bearer")
-    .AddJwtBearer("Bearer", options =>
-    {
-        options.Authority = "https://localhost:4435/";
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateAudience = false
-        };
-
-    });
-
-builder.Services.AddAuthorization(options =>
-{
-
-    options.AddPolicy("ApiScope", policy =>
-    {
-        policy.RequireAuthenticatedUser();
-        policy.RequireClaim("scope", "leo_shopping");
-    });
-
-});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -55,7 +19,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "LeoShopping Microserviço - Order",
+        Title = "LeoShopping Microserviço - Payment",
         Version = "v1",
         Contact = new OpenApiContact
         {

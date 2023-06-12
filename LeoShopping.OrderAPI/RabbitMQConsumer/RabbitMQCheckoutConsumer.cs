@@ -1,5 +1,6 @@
 ﻿using LeoShopping.OrderAPI.Messages;
 using LeoShopping.OrderAPI.Model;
+using LeoShopping.OrderAPI.RabbitMQSender;
 using LeoShopping.OrderAPI.Repository;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -13,10 +14,13 @@ namespace LeoShopping.OrderAPI.RabbitMQConsumer
         private readonly OrderRepository _repository;
         private IConnection _connection;
         private IModel _channel;
+        private IRabbitMQMessageSenser _rabbitMQMessageSenser;
 
-        public RabbitMQCheckoutConsumer(OrderRepository repository)
+        public RabbitMQCheckoutConsumer(OrderRepository repository, IRabbitMQMessageSenser rabbitMQMessageSenser)
         {
             _repository = repository;
+            _rabbitMQMessageSenser = rabbitMQMessageSenser;
+
             var factory = new ConnectionFactory()
             {
                 HostName = "localhost",
@@ -25,7 +29,7 @@ namespace LeoShopping.OrderAPI.RabbitMQConsumer
             };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
-            _channel.QueueDeclare(queue: "checkoutqueue", false, false, false, arguments: null);
+            _channel.QueueDeclare(queue: "checkoutqueue", false, false, false, arguments: null);            
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -64,7 +68,8 @@ namespace LeoShopping.OrderAPI.RabbitMQConsumer
                 ExpiryMonthYear = dto.ExpiryMonthYear,
                 OrderTime = DateTime.Now,
                 PaymentStatus = false,
-                Phone = dto.Phone,                
+                Phone = dto.Phone,
+                PurchaseAmount = dto.PurchaseAmount
             };
 
             foreach (var item in dto.CartDetails)
@@ -82,6 +87,28 @@ namespace LeoShopping.OrderAPI.RabbitMQConsumer
             }
 
             await _repository.AddOrder(order);
+
+            PaymentDTO payment = new PaymentDTO()
+            {
+                Name = order.FirstName + " " + order.LastName,
+                CardNumber = order.CardNumber,
+                CVV = order.CVV,
+                ExpiryMonthYear = order.ExpiryMonthYear,
+                OrderId = order.Id,
+                PurchageAmount = order.PurchaseAmount,
+                Email = order.Email
+            };
+
+            try
+            {
+                _rabbitMQMessageSenser.SendMessage(payment, "orderpaymentprocess");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
     }
 }
